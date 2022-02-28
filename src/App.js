@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
-
+import CustomForm from './pages/CustomForm';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import AllFormList from './pages/AllFormList';
+import { editForm, SubmitForm } from './actions/formAction';
+import React, { useContext } from 'react';
+import { useAlert } from 'react-alert';
+export const AlertContext = React.createContext("")
 function App() {
+  const alert = useAlert();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <AlertContext.Provider value={alert}>
+        <div className="container">
+          <Routes>
+            <Route path="/list" element={<AllFormList />} />
+            <Route path='/' element={<CustomForm action={"Submit"} callback={SubmitForm} />} />
+            <Route path='/edit/:id' element={<CustomForm action={"Save Change"} callback={editForm} />} />
+          </Routes>
+        </div>
+      </AlertContext.Provider>
+    </BrowserRouter>
   );
 }
 
